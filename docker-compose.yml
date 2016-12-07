@@ -3,14 +3,10 @@ services:
 
   httpd:
     build: ./httpd
-    environment:
-      APACHE_USER: www-data
-      APACHE_GROUP: www-data
     volumes:
-      - ./httpd/webroot_php5:/var/www/php5
-      - ./httpd/webroot_php7:/var/www/php7
+      - ./httpd/webroot:/var/www
       - ./httpd/sites-enabled:/etc/apache2/sites-enabled
-      - ./httpd/logs:/var/log/apache2
+      - ./httpd/logs:/var/log
     ports:
       - "80:80"
     links:
