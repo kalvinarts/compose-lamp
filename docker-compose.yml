@@ -1,0 +1,36 @@
+version: "2"
+services:
+
+  httpd:
+    build: ./httpd
+    environment:
+      APACHE_USER: www-data
+      APACHE_GROUP: www-data
+    volumes:
+      - ./httpd/webroot_php5:/var/www/php5
+      - ./httpd/webroot_php7:/var/www/php7
+      - ./httpd/sites-enabled:/etc/apache2/sites-enabled
+      - ./httpd/logs:/var/log/apache2
+    ports:
+      - "80:80"
+    links:
+      - db
+    extra_hosts:
+      - php5.example.com:127.0.0.1
+      - php7.examplei.com:127.0.0.1
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ro0T_s€cr3t
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: apP_s€cr3t
+    volumes:
+      # Recover a database dump
+      #- "./db/dump:/docker-entrypoint-init.d"
+      # Store mysql data dir outside the container
+      - ./db/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
